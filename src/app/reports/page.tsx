@@ -23,6 +23,12 @@ export default function OrdersPage({}: Props) {
   const [reports, setReports] = useState([]);
   const [loading, setLoading] = useState(true); // Loading state
 
+  const dateSort = (rowA, rowB, columnId) => {
+    const dateA = new Date(rowA.getValue(columnId));
+    const dateB = new Date(rowB.getValue(columnId));
+    return dateA - dateB; // ascending order
+  };
+
   const columns: ColumnDef<Payment>[] = [
     {
       accessorKey: "email",
@@ -77,6 +83,8 @@ export default function OrdersPage({}: Props) {
     {
       accessorKey: "time",
       header: "Time",
+      sortingFn: dateSort,
+      cell: (info) => new Date(info.getValue()).toLocaleDateString(),
     },
     {
       accessorKey: "seen",

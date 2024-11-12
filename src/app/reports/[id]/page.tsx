@@ -6,7 +6,7 @@ import {
   getReportById,
   updateReportStatus,
 } from "@/functions/functions";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Clock, Eye, Mail, MapPin, Paperclip, Wrench } from "lucide-react";
 import {
   Select,
@@ -15,12 +15,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useToast } from "@/components/ui/use-toast";
 
 const UpdateForm = ({ reportId }) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
   const [initialValues, setInitialValues] = useState(null);
   const [status, setStatus] = useState("");
   const [seen, setSeen] = useState(false);
   const [selectedEmail, setSelectedEmail] = useState("");
+  const router = useRouter();
   const pathname = usePathname();
 
   useEffect(() => {
@@ -48,14 +52,25 @@ const UpdateForm = ({ reportId }) => {
   }, [pathname]);
 
   const onSubmit = async () => {
+    setIsLoading(true);
     const reportIdFromPath = pathname.split("/").pop();
     try {
       updateReportStatus(reportIdFromPath, status);
-
+      toast({
+        title: "Successfully updated",
+        description: "Report updated successfully",
+      });
+      setIsLoading(false);
+      router.push("../reports");
       // Handle success or navigate to another page
     } catch (error) {
       console.error("Error updating report:", error);
       // Handle error
+      toast({
+        title: "Error",
+        description: "Error updating report",
+      });
+      setIsLoading(false);
     }
   };
 

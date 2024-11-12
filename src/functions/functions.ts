@@ -82,6 +82,18 @@ const getUsers = async () => {
   }
 };
 
+const deleteUserById = async (userId) => {
+  try {
+    const userRef = doc(db, "users", userId); // Reference to the specific document
+    await deleteDoc(userRef); // Delete the document
+    console.log(`User with ID ${userId} has been deleted successfully.`);
+    return true; // Return true on success
+  } catch (error) {
+    console.error("Error deleting user: ", error);
+    return false; // Return false on failure
+  }
+};
+
 const addReport = async (values) => {
   try {
     const docRef = await addDoc(collection(db, "reports"), values);
@@ -91,7 +103,7 @@ const addReport = async (values) => {
       id: docRef.id, // Assign Firestore-generated ID to the 'id' field
     });
 
-    const url = `http://localhost:3000/send-message`;
+    const url = `https://telegram-bot-murex-sigma.vercel.app/send-message`;
 
     try {
       const response = await fetch(url, {
@@ -319,6 +331,7 @@ export {
   updateUser,
   getUsers,
   fetchUserById,
+  deleteUserById,
   addReport,
   getReports,
   getReportById,

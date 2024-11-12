@@ -26,6 +26,8 @@ import {
 } from "@/components/ui/select";
 import { addReport } from "@/functions/functions";
 import { storage } from "@/lib/firebase";
+import { useRouter } from "next/navigation";
+import { useToast } from "@/components/ui/use-toast";
 
 // Schema validation
 const formSchema = z.object({
@@ -45,10 +47,13 @@ const formSchema = z.object({
 });
 
 const FormPage = () => {
+  const router = useRouter();
+  const { toast } = useToast();
   const [imageSrc, setImageSrc] = useState(null);
   const [imageFile, setImageFile] = useState(null);
   const [isWebcam, setIsWebcam] = useState(false);
   const webcamRef = useRef(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -150,7 +155,8 @@ const FormPage = () => {
   };
 
   const onSubmit = async (values) => {
-    console.log("Form data:", values);
+    setIsLoading(true);
+    // console.log("Form data:", values);
     // console.log(imageFile);
     try {
       let url = await uploadImageAndStoreData(imageFile);
@@ -158,8 +164,19 @@ const FormPage = () => {
       const reportData = { ...values, imageUrl: url };
       console.log(reportData);
       await addReport(reportData);
+      router.push("../reports");
+      toast({
+        title: "Success",
+        description: "Report sent successfully!",
+      });
+      setIsLoading(false);
     } catch (e) {
       console.error("Error submitting form: ", e);
+      toast({
+        title: "Error",
+        description: "Failed to send report. Please try again.",
+      });
+      setIsLoading(false);
     }
   };
 
@@ -270,12 +287,14 @@ const FormPage = () => {
           )}
 
           <div className=" flex flex-row gap-4 w-full">
-            <Button type="submit">Submit</Button>
+            <Button type="submit" disabled={isLoading}>
+              {isLoading ? "Loading..." : "Submit"}
+            </Button>
 
             {imageSrc && (
-              <>
-                <Button onClick={() => setImageSrc(null)}>Try Again</Button>
-              </>
+              <Button onClick={() => setImageSrc(null)} disabled={isLoading}>
+                {isLoading ? "Loading..." : "Try Again"}
+              </Button>
             )}
           </div>
         </form>

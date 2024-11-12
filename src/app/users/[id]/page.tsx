@@ -25,7 +25,7 @@ import {
 } from "@/components/ui/select";
 import bcrypt from "bcryptjs";
 import { updateUser, fetchUserById } from "@/functions/functions"; // Assuming these functions are defined
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 
 const formSchema = z.object({
@@ -45,6 +45,7 @@ const formSchema = z.object({
 
 const UpdatePage = () => {
   const { toast } = useToast();
+  const router = useRouter();
   const pathname = usePathname();
   const id = pathname.split("/").pop();
   const form = useForm<z.infer<typeof formSchema>>({
@@ -110,6 +111,7 @@ const UpdatePage = () => {
           title: "Success",
           description: "User updated successfully!",
         });
+        router.push("../users");
       } else {
         toast({
           title: "Error",

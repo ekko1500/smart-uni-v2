@@ -26,6 +26,8 @@ import {
 } from "@/components/ui/select";
 import { addReport } from "@/functions/functions";
 import { storage } from "@/lib/firebase";
+import { useRouter } from "next/navigation";
+import { useToast } from "@/components/ui/use-toast";
 
 // Schema validation
 const formSchema = z.object({
@@ -45,6 +47,8 @@ const formSchema = z.object({
 });
 
 const FormPage = () => {
+  const { toast } = useToast();
+  const router = useRouter();
   const [imageSrc, setImageSrc] = useState(null);
   const [imageFile, setImageFile] = useState(null);
   const [isWebcam, setIsWebcam] = useState(false);
@@ -158,8 +162,17 @@ const FormPage = () => {
       const reportData = { ...values, imageUrl: url };
       console.log(reportData);
       await addReport(reportData);
+      router.push("../reports");
+      toast({
+        title: "Success",
+        description: "Report sent successfully!",
+      });
     } catch (e) {
       console.error("Error submitting form: ", e);
+      toast({
+        title: "Error",
+        description: "Failed to send report. Please try again.",
+      });
     }
   };
 
