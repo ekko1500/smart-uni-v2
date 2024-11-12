@@ -24,7 +24,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import bcrypt from "bcryptjs";
-import { updateUser, getUser } from "@/functions/functions"; // Assuming these functions are defined
+import { updateUser, fetchUserById } from "@/functions/functions"; // Assuming these functions are defined
+import { usePathname } from "next/navigation";
+import { useToast } from "@/components/ui/use-toast";
 
 const formSchema = z.object({
   username: z.string().min(2, {
@@ -41,7 +43,10 @@ const formSchema = z.object({
   }),
 });
 
-const UpdatePage = ({ userId }) => {
+const UpdatePage = () => {
+  const { toast } = useToast();
+  const pathname = usePathname();
+  const id = pathname.split("/").pop();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -53,8 +58,9 @@ const UpdatePage = ({ userId }) => {
   });
 
   useEffect(() => {
+    console.log(id);
     async function fetchUserData() {
-      const userData = await getUser(userId);
+      const userData = await fetchUserById(id);
       form.reset({
         username: userData.username,
         email: userData.email,
@@ -63,7 +69,7 @@ const UpdatePage = ({ userId }) => {
       });
     }
     fetchUserData();
-  }, [userId, form]);
+  }, [form]);
 
   // Function to hash password using bcryptjs
   async function hashPassword(password: string): Promise<string | null> {
@@ -93,7 +99,23 @@ const UpdatePage = ({ userId }) => {
       // firestore.collection('users').doc(userId).update(values);
 
       //update user
-      updateUser(userId, values);
+      // updateUser(id, values);
+
+      // Simulate an async update function
+      const isSuccess = await updateUser(id, values); // Call the actual updateUser function here
+
+      // Set up success or error message based on the result
+      if (isSuccess) {
+        toast({
+          title: "Success",
+          description: "User updated successfully!",
+        });
+      } else {
+        toast({
+          title: "Error",
+          description: "Failed to update user. Please try again.",
+        });
+      }
     }
   }
 
@@ -106,6 +128,16 @@ const UpdatePage = ({ userId }) => {
           className=" h-[12rem] w-[12rem]"
         />
       </div>
+      <Button
+        onClick={() => {
+          toast({
+            title: "Scheduled: Catch up",
+            description: "Friday, February 10, 2023 at 5:57 PM",
+          });
+        }}
+      >
+        Show Toast
+      </Button>
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">

@@ -63,6 +63,10 @@ export default function UsersPage({}: Props) {
       header: "Email",
     },
     {
+      accessorKey: "userId",
+      header: "User ID",
+    },
+    {
       accessorKey: "role",
       header: "Role",
     },
@@ -74,9 +78,9 @@ export default function UsersPage({}: Props) {
           <div className="flex gap-6 items-center ">
             <img
               onClick={() => {
-                console.log(row.getValue("email"));
+                console.log(row.getValue("userId"));
                 //route to row.getValue("email")
-                router.push(`./users/${row.getValue("email")}`);
+                router.push(`./users/${row.getValue("userId")}`);
               }}
               className="h-6 w-6"
               src="assets/quill-pen.png"

@@ -32,7 +32,7 @@ const addUser = async ({ username, email, password, role }) => {
 };
 
 const fetchUserById = async (userId) => {
-  // console.log(userId);
+  console.log(userId);
   try {
     // Create a query against the collection
     const q = query(collection(db, "users"), where("userId", "==", userId));
@@ -61,8 +61,10 @@ const updateUser = async (userId, updatedData) => {
     const userDoc = doc(db, "users", userId);
     await updateDoc(userDoc, updatedData);
     console.log("User updated successfully");
+    return true;
   } catch (error) {
     console.error("Error updating user: ", error);
+    return false;
   }
 };
 

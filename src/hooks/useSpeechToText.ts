@@ -20,8 +20,6 @@ const useSpeechToText = () => {
     if ("webkitSpeechGrammerList" in window) {
     }
   }, []);
-
-  return <div></div>;
 };
 
 export default useSpeechToText;
