@@ -21,35 +21,36 @@ import {
   DocumentData,
 } from "firebase/firestore";
 import { db } from "@/lib/firebase";
+import PeopleWithCar from "@/components/dashboard/PeopleWithCar";
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
 
   const [carStatusInUsers, setCarStatusInUsers] = useState<DocumentData[]>([]);
 
-  useEffect(() => {
-    // Reference to the 'rfid_cards' collection
-    const rfidCardsCollection = collection(db, "rfid_cards");
+  // useEffect(() => {
+  //   // Reference to the 'rfid_cards' collection
+  //   const rfidCardsCollection = collection(db, "rfid_cards");
 
-    // Create a query against the collection
-    const q = query(rfidCardsCollection, where("status", "==", "in"));
+  //   // Create a query against the collection
+  //   const q = query(rfidCardsCollection, where("status", "==", "in"));
 
-    // Set up a real-time listener
-    const unsubscribe = onSnapshot(
-      q,
-      (querySnapshot) => {
-        const data = querySnapshot.docs.map((doc) => doc.data()); // Extract data from documents
-        // console.log(data);
-        setCarStatusInUsers(data); // Update the state with the document data
-      },
-      (error) => {
-        console.error("Error listening for real-time updates:", error);
-      }
-    );
+  //   // Set up a real-time listener
+  //   const unsubscribe = onSnapshot(
+  //     q,
+  //     (querySnapshot) => {
+  //       const data = querySnapshot.docs.map((doc) => doc.data()); // Extract data from documents
+  //       // console.log(data);
+  //       setCarStatusInUsers(data); // Update the state with the document data
+  //     },
+  //     (error) => {
+  //       console.error("Error listening for real-time updates:", error);
+  //     }
+  //   );
 
-    // Cleanup on component unmount
-    return () => unsubscribe();
-  }, []); // Empty dependency array means this effect runs once on mount
+  //   // Cleanup on component unmount
+  //   return () => unsubscribe();
+  // }, []); // Empty dependency array means this effect runs once on mount
 
   useEffect(() => {
     // Simulate a page load with a timeout
@@ -70,26 +71,23 @@ export default function Home() {
       {/* garden */}
       <Garden />
       <Separator className="my-4" />
-
       {/* classroom */}
       <Classroom />
       <Separator className="my-4" />
-
       {/* water tank */}
       <WaterTank />
       <Separator className="my-4" />
-
       {/* car gate */}
       {/* <CarGate /> */}
       <Separator className="my-4" />
-
+      <PeopleWithCar />
       {/* overview */}
       <section className="grid grid-cols-1 gap-4 transition-all lg:grid-cols-2">
         {/* <CardContent>
           <p className="p-4 font-semibold">Overview</p>
           <BarChart />
         </CardContent> */}
-        <CardContent className="flex justify-between gap-4">
+        {/* <CardContent className="flex justify-between gap-4">
           <section>
             <p>List of people</p>
             <p className="text-sm text-gray-400">
@@ -107,7 +105,7 @@ export default function Home() {
               <p className="text-sm text-gray-400">No car found</p>
             </>
           )}
-        </CardContent>
+        </CardContent> */}
       </section>
     </div>
   );

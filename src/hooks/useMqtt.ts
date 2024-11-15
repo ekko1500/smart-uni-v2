@@ -2,9 +2,6 @@ import { useState, useEffect } from "react";
 import mqtt from "mqtt";
 import { MQTT_PASSWORD, MQTT_USERNAME } from "@/lib/MQTTapi";
 
-const MQTT_BROKER_URL =
-  "wss://aa0833f451b94813adf231c23796f893.s1.eu.hivemq.cloud:8884/mqtt";
-
 const useMqtt = (brokerUrl: string, topic: string) => {
   const [message, setMessage] = useState(null);
   const [client, setClient] = useState(null);
@@ -58,7 +55,7 @@ const useMqtt = (brokerUrl: string, topic: string) => {
     }
   };
 
-  return { message, client, publishMessage, connected };
+  return { message, client, publishMessage, connected, setMessage };
 };
 
 export default useMqtt;

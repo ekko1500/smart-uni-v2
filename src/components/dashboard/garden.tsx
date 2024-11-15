@@ -84,13 +84,14 @@ const Garden = () => {
         <img src="../assets/gardening.png" alt="garden" className=" h-8 w-8" />
         <PageTitle title="Garden" />
       </div>
-      <button onClick={() => toggle()} disabled={!connected}>
+      <div onClick={() => toggle()}>
         <SwitchDemo
           status={mode_status || "1"}
           label="Mode"
           label2={mode_status || "1"}
         />
-      </button>
+      </div>
+
       <section className="grid w-full grid-cols-1 gap-4 gap-x-8 transition-all sm:grid-cols-2 xl:grid-cols-4">
         {cardData_garden.map((d, i) => (
           <Card

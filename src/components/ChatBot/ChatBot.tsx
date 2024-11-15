@@ -170,6 +170,20 @@ const ChatBot = () => {
       console.log("Turning the third floor light off...");
       AudioStream("Turning the third floor light off");
       toggleThirdFloorLight("0");
+    } else if (
+      lowerCaseText.includes("fan on") ||
+      lowerCaseText.includes("fan on")
+    ) {
+      console.log("Turning the fan on...");
+      AudioStream("Turning the fan on");
+      toggleFan("1");
+    } else if (
+      lowerCaseText.includes("fan off") ||
+      lowerCaseText.includes("fan off")
+    ) {
+      console.log("Turning the fan off...");
+      AudioStream("Turning the fan off");
+      toggleFan("0");
     } else if (lowerCaseText.includes("garden light on")) {
       console.log("Turning the garden light on...");
       AudioStream("Turning the garden light on");

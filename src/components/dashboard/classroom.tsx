@@ -144,13 +144,13 @@ const Classroom = () => {
           </SelectContent>
         </Select>
       </div>
-      <button onClick={() => toggle()} disabled={!connected}>
+      <div onClick={() => toggle()}>
         <SwitchDemo
           status={mode_status || "1"}
           label="Mode"
           label2={mode_status || "1"}
         />
-      </button>
+      </div>
       <section className="grid w-full grid-cols-1 gap-4 gap-x-8 transition-all sm:grid-cols-2 xl:grid-cols-4">
         {cardData_classroom.map((d, i) => (
           <Card
