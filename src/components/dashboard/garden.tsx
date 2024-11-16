@@ -51,8 +51,11 @@ const Garden = () => {
     },
     {
       label: "Dryness",
-      amount: moisture !== null ? `${moisture}` : "Loading...",
-      description: "Current soil moisture intensity",
+      amount:
+        moisture !== null
+          ? `${moisture.replace("Moisture", "Dryness")}`
+          : "Loading...",
+      description: "Current soil dryness intensity",
       icon: TreeDeciduous,
       control: "water-pump",
       broker_url: BROKER_URL,
@@ -60,7 +63,8 @@ const Garden = () => {
     {
       label: "Light",
       amount: light !== null ? `${light} lx` : "Loading...",
-      description: "Current light intensity in lux",
+      description:
+        "Current light intensity in lux , o means day & 1 mean night",
       icon: Sun,
       control: "led",
       broker_url: BROKER_URL,
